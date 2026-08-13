@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hisham C — Linux Systems Administrator & DevOps Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b1120;
+    --surface:#121b30;
+    --surface-2:#182444;
+    --line:#26314f;
+    --text:#e4e9f2;
+    --muted:#8994ac;
+    --amber:#f5a524;
+    --green:#4ade80;
+    --cyan:#5bc8e8;
+    --mono:'JetBrains Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--amber);color:#0b1120;}
+  :focus-visible{outline:2px solid var(--amber); outline-offset:3px;}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(10px);
+    background:rgba(11,17,32,0.85);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;}
+  .brand{font-family:var(--mono);font-weight:600;font-size:14px;letter-spacing:.02em;}
+  .brand .dot{color:var(--green);}
+  .navlinks{display:flex;gap:24px;font-family:var(--mono);font-size:12.5px;color:var(--muted);}
+  .navlinks a{text-decoration:none;transition:color .15s;}
+  .navlinks a:hover{color:var(--amber);}
+  .navlinks span{color:var(--line);}
+
+  /* HERO */
+  header.hero{padding:90px 0 70px;}
+  .term{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,.6);
+  }
+  .term-bar{
+    display:flex;align-items:center;gap:8px;
+    padding:11px 16px;
+    background:var(--surface-2);
+    border-bottom:1px solid var(--line);
+  }
+  .term-bar span{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .term-bar span:nth-child(1){background:#ff5f57;}
+  .term-bar span:nth-child(2){background:#febc2e;}
+  .term-bar span:nth-child(3){background:#28c840;}
+  .term-title{margin-left:8px;font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .term-body{padding:28px 24px 30px;font-family:var(--mono);font-size:15px;}
+  .term-body .line{color:var(--muted);margin-bottom:4px;}
+  .term-body .prompt{color:var(--green);}
+  .term-body .cmd{color:var(--text);}
+  #typed{color:var(--text);}
+  .cursor{display:inline-block;width:8px;height:16px;background:var(--amber);vertical-align:middle;animation:blink 1s step-end infinite;margin-left:2px;}
+  @keyframes blink{50%{opacity:0;}}
+  .out-name{font-size:34px;font-weight:800;font-family:var(--sans);margin:16px 0 4px;letter-spacing:-.01em;}
+  .out-role{color:var(--cyan);font-size:16px;margin-bottom:14px;}
+  .status-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px;}
+  .badge{
+    display:inline-flex;align-items:center;gap:7px;
+    font-family:var(--mono);font-size:12px;
+    padding:5px 10px;border-radius:20px;
+    border:1px solid var(--line);background:var(--surface-2);color:var(--muted);
+  }
+  .badge .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:pulse 2s infinite;}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(74,222,128,.5);}
+    70%{box-shadow:0 0 0 7px rgba(74,222,128,0);}
+    100%{box-shadow:0 0 0 0 rgba(74,222,128,0);}
+  }
+  .hero-links{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono);font-size:13px;
+    padding:11px 18px;border-radius:7px;
+    text-decoration:none;border:1px solid var(--line);
+    transition:transform .15s, border-color .15s, color .15s;
+  }
+  .btn.primary{background:var(--amber);color:#151016;border-color:var(--amber);font-weight:600;}
+  .btn.primary:hover{transform:translateY(-2px);}
+  .btn.ghost{color:var(--text);}
+  .btn.ghost:hover{border-color:var(--amber);color:var(--amber);}
+
+  /* SECTION SHELL */
+  section{padding:64px 0;border-top:1px solid var(--line);}
+  .eyebrow{
+    font-family:var(--mono);font-size:12.5px;color:var(--amber);
+    display:flex;align-items:center;gap:10px;margin-bottom:20px;
+  }
+  .eyebrow::before{content:'$';color:var(--muted);}
+  h2{font-size:26px;font-weight:800;margin-bottom:22px;letter-spacing:-.01em;}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;}
+  .about-grid p{color:#c4cbdc;font-size:15.5px;margin-bottom:14px;}
+  .facts{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);align-self:start;}
+  .fact{display:flex;justify-content:space-between;padding:13px 16px;font-family:var(--mono);font-size:12.5px;border-bottom:1px solid var(--line);}
+  .fact:last-child{border-bottom:none;}
+  .fact .k{color:var(--muted);}
+  .fact .v{color:var(--text);text-align:right;}
+
+  /* STACK */
+  .stack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
+  .stack-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;
+  }
+  .stack-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .stack-card .head h3{font-size:13px;font-family:var(--mono);color:var(--cyan);text-transform:uppercase;letter-spacing:.06em;}
+  .stack-card .head .status{font-family:var(--mono);font-size:10.5px;color:var(--green);}
+  .stack-card ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px;}
+  .stack-card li{
+    font-family:var(--mono);font-size:11.5px;color:var(--muted);
+    border:1px solid var(--line);padding:4px 8px;border-radius:5px;
+  }
+
+  /* PROJECTS */
+  .proj{
+    border:1px solid var(--line);border-radius:10px;background:var(--surface);
+    padding:22px 24px;margin-bottom:14px;
+    display:grid;grid-template-columns:auto 1fr;gap:20px;
+  }
+  .proj .idx{font-family:var(--mono);color:var(--muted);font-size:12px;padding-top:3px;}
+  .proj h3{font-size:17px;margin-bottom:6px;}
+  .proj .tag{color:var(--amber);font-family:var(--mono);font-size:11px;margin-bottom:10px;display:inline-block;}
+  .proj p{color:#c4cbdc;font-size:14.5px;}
+  .proj .badge{margin-top:12px;}
+
+  /* EXPERIENCE */
+  .timeline{position:relative;padding-left:26px;}
+  .timeline::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:var(--line);}
+  .tl-item{position:relative;padding-bottom:30px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:'';position:absolute;left:-26px;top:4px;width:11px;height:11px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--green);
+  }
+  .tl-item .when{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-bottom:4px;}
+  .tl-item h3{font-size:15.5px;margin-bottom:3px;}
+  .tl-item .org{color:var(--cyan);font-size:13px;margin-bottom:8px;}
+  .tl-item p{color:#c4cbdc;font-size:14px;}
+
+  /* CONTACT */
+  footer{padding:60px 0 50px;}
+  .contact-box{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:36px;text-align:center;
+  }
+  .contact-box h2{margin-bottom:10px;}
+  .contact-box p{color:var(--muted);font-size:14.5px;margin-bottom:22px;}
+  .contact-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+  .fine{text-align:center;color:var(--muted);font-family:var(--mono);font-size:11.5px;margin-top:34px;}
+
+  @media (max-width:720px){
+    .about-grid{grid-template-columns:1fr;}
+    .proj{grid-template-columns:1fr;}
+    .out-name{font-size:27px;}
+    .navlinks{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">hisham<span class="dot">@</span>portfolio<span>:~$</span></div>
+    <div class="navlinks">
+      <a href="#about">about</a><span>/</span>
+      <a href="#stack">stack</a><span>/</span>
+      <a href="#projects">projects</a><span>/</span>
+      <a href="#experience">experience</a><span>/</span>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="term">
+      <div class="term-bar">
+        <span></span><span></span><span></span>
+        <div class="term-title">hisham@iocod — zsh</div>
+      </div>
+      <div class="term-body">
+        <div class="line"><span class="prompt">$</span> <span class="cmd">whoami</span></div>
+        <div id="typed"></div><span class="cursor" id="cursor"></span>
+      </div>
+    </div>
+
+    <div class="status-row">
+      <span class="badge"><span class="pulse"></span> systemctl status hisham.service — active (open to work)</span>
+      <span class="badge" id="uptime">uptime: 0s</span>
+      <span class="badge">Kerala, IN</span>
+    </div>
+
+    <div class="hero-links">
+      <a class="btn primary" href="mailto:hishamc33@gmail.com">mail --to hisham</a>
+      <a class="btn ghost" href="https://github.com/hishamc33" target="_blank" rel="noopener">git clone github.com/hishamc33</a>
+      <a class="btn ghost" href="https://linkedin.com/in/hishamc33" target="_blank" rel="noopener">curl linkedin.com/in/hishamc33</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="eyebrow">cat about.md</div>
+    <div class="about-grid">
+      <div>
+        <p>I'm a Linux Systems Administrator and DevOps Engineer based in Kerala, India, currently working as a TechOps Intern at IOCOD Infotech. I spend my time provisioning infrastructure, automating deployments, and keeping systems observable rather than mysterious.</p>
+        <p>My work sits across Linux administration, cloud infrastructure on AWS, containerization, and CI/CD — I like building pipelines that take an idea from a Git push to a running, monitored service with as little manual intervention as possible.</p>
+        <p>I graduated with a B.Sc. in Computer Science from MAMO College (Calicut University) in 2025, and before my current role, I trained as a Cloud & DevOps Intern and Server Administrator Trainee at IPSR Solutions Limited.</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><span class="k">role</span><span class="v">TechOps Intern, IOCOD Infotech</span></div>
+        <div class="fact"><span class="k">focus</span><span class="v">Linux · AWS · DevOps</span></div>
+        <div class="fact"><span class="k">education</span><span class="v">B.Sc CS, MAMO College</span></div>
+        <div class="fact"><span class="k">location</span><span class="v">Kerala, India</span></div>
+        <div class="fact"><span class="k">achievement</span><span class="v">1st — Hatathon StackOps 2026</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="eyebrow">systemctl list-units --stack</div>
+    <h2>Tools I run in production</h2>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="head"><h3>OS &amp; Networking</h3><span class="status">● active</span></div>
+        <ul><li>Linux / RHEL 9</li><li>Nginx</li><li>Apache</li><li>HAProxy</li><li>firewalld</li><li>SELinux</li></ul>
+      </div>
+      <div class="stack-card">
+        <div class="head"><h3>Cloud (AWS)</h3><span class="status">● active</span></div>
+        <ul><li>EC2</li><li>S3</li><li>IAM</li><li>VPC</li><li>Lambda</li><li>DynamoDB</li><li>CloudWatch</li><li>Route 53</li></ul>
+      </div>
+      <div class="stack-card">
+        <div class="head"><h3>Containers &amp; Orchestration</h3><span class="status">● active</span></div>
+        <ul><li>Docker</li><li>Kubernetes</li><li>OpenShift</li></ul>
+      </div>
+      <div class="stack-card">
+        <div class="head"><h3>CI/CD &amp; IaC</h3><span class="status">● active</span></div>
+        <ul><li>Jenkins</li><li>Ansible</li><li>Terraform</li></ul>
+      </div>
+      <div class="stack-card">
+        <div class="head"><h3>Observability</h3><span class="status">● active</span></div>
+        <ul><li>Prometheus</li><li>Grafana</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="eyebrow">ls -la ./projects</div>
+    <h2>Selected work</h2>
+
+    <div class="proj">
+      <div class="idx">01</div>
+      <div>
+        <span class="tag">AWS · Serverless</span>
+        <h3>QuizStack</h3>
+        <p>A serverless quiz platform built on AWS, using Lambda for compute, DynamoDB for state, and the surrounding AWS toolset for auth, storage, and delivery — designed to scale without managing servers directly.</p>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="idx">02</div>
+      <div>
+        <span class="tag">CI/CD · LEMP</span>
+        <h3>LEMP Stack CI/CD Pipeline</h3>
+        <p>An automated deployment pipeline for a Linux/Nginx/MySQL/PHP stack, taking code from commit to a live server through a repeatable, Jenkins-driven release process.</p>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="idx">03</div>
+      <div>
+        <span class="tag">OpenShift · Kubernetes</span>
+        <h3>Hatathon OpenShift Deployment</h3>
+        <p>Designed and deployed an application on Red Hat OpenShift for the Hatathon StackOps 2026 competition.</p>
+        <span class="badge">🏆 1st place — Hatathon StackOps 2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="eyebrow">journalctl -u career --since "2023"</div>
+    <h2>Experience</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="when">Current</div>
+        <h3>TechOps Intern</h3>
+        <div class="org">IOCOD Infotech</div>
+        <p>Working across systems and infrastructure operations, applying Linux administration and DevOps practices in a live production environment.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Prior</div>
+        <h3>Cloud &amp; DevOps Intern / Server Administrator Trainee</h3>
+        <div class="org">IPSR Solutions Limited</div>
+        <p>Trained in cloud infrastructure and server administration, building the foundation in Linux systems and DevOps tooling that carries into current work.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">2022 – 2025</div>
+        <h3>B.Sc. Computer Science</h3>
+        <div class="org">MAMO College, Calicut University</div>
+        <p>Completed a Bachelor's degree in Computer Science.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>./get_in_touch.sh</h2>
+      <p>Open to Linux administration and DevOps roles — happy to talk infrastructure, automation, or anything in between.</p>
+      <div class="contact-row">
+        <a class="btn primary" href="mailto:hishamc33@gmail.com">hishamc33@gmail.com</a>
+        <a class="btn ghost" href="tel:+919778038813">+91 97780 38813</a>
+        <a class="btn ghost" href="https://github.com/hishamc33" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn ghost" href="https://linkedin.com/in/hishamc33" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div class="fine">// exit 0 — thanks for reading</div>
+  </div>
+</footer>
+
+<script>
+  // Typed "whoami" output
+  const output = "hisham-c — linux systems administrator & devops engineer";
+  const typedEl = document.getElementById('typed');
+  let i = 0;
+  function type(){
+    if(i <= output.length){
+      typedEl.textContent = output.slice(0, i);
+      i++;
+      setTimeout(type, 28);
+    } else {
+      document.querySelector('.out-name') || renderIdentity();
+    }
+  }
+  function renderIdentity(){
+    const term = document.querySelector('.term-body');
+    const name = document.createElement('div');
+    name.className = 'out-name';
+    name.textContent = 'Hisham C';
+    const role = document.createElement('div');
+    role.className = 'out-role';
+    role.textContent = 'Linux Systems Administrator & DevOps Engineer';
+    term.appendChild(name);
+    term.appendChild(role);
+  }
+  type();
+
+  // live uptime counter — a small nod to systemd's own uptime
+  const start = Date.now();
+  const uptimeEl = document.getElementById('uptime');
+  setInterval(() => {
+    const s = Math.floor((Date.now() - start)/1000);
+    const m = Math.floor(s/60);
+    const sec = s % 60;
+    uptimeEl.textContent = `uptime: ${m}m ${sec}s`;
+  }, 1000);
+</script>
+
+</body>
+</html>
